@@ -35,7 +35,7 @@ declare global {
   }
 
   interface ArrayConstructor {
-    isArray<T>(arg: T | T[]): arg is T[] extends T ? T[] : any[];
+    isArray<T>(arg: T[] extends T ? T | T[] : never): arg is unknown[];
     new (arrayLength?: number): unknown[];
     (arrayLength?: number): unknown[];
   }
