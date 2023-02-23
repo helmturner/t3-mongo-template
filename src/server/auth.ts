@@ -21,9 +21,12 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
+      name: string;
+      email: string;
+      image?: string;
       // ...other properties
       // role: UserRole;
-    } & DefaultSession["user"];
+    }
   }
 
   //  interface User {
@@ -34,11 +37,11 @@ declare module "next-auth" {
 
 declare module "next-auth/jwt" {
   interface JWT {
-    user: {
-      id: string;
-      // ...other properties
-      // role: UserRole;
-    };
+    userId: string;
+    username: string;
+    email: string
+    picture?: string | undefined;
+    // ...other properties
   }
 }
 
@@ -205,12 +208,18 @@ const getAuthOptions = async (): Promise<AuthOptions> => {
     callbacks: {
       jwt({ token, user, profile }) {
         if (user && profile) {
-          token.user.id = user.id;
+          token.userId = user.id;
+          token.picture = user.image ?? profile.image ?? undefined;
+          token.username = user.name;
+          token.email = user.email;
         }
         return token;
       },
       session({ session, token }) {
-        session.user.id = token.user.id;
+        session.user.id = token.userId;
+        session.user.image = token.picture;
+        session.user.name = token.username;
+        session.user.email = token.email;
         return session;
       },
     },
