@@ -1,6 +1,13 @@
 # Create T3 App
 
-This is a highly opinionated version of a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app` and configured to use MongoDB without Prisma.
+This is a highly opinionated version of a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+
+It is configured to use MongoDB, JWTs for auth, and vitest + supertest for testing. It also includes extra TS goodies such as `@total-typescript/ts-reset` and other overrides.
+
+## IMPORTANT NOTES
+
+- This template includes an opinionated `prettier.config.cjs` which inserts semi-colons, avoids arrow parenthesis, and adds trailing commas.
+- If you are familiar with the usual T3 setup, note that the tRPC client exported as `api` from `src/utils/api.ts` is now exported from `src/client/sdk.ts` as `sdk`.
 
 ## What's next? How do I make an app with this?
 
