@@ -4,12 +4,6 @@ import "@total-typescript/ts-reset";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare global {
   interface Promise<T> {
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
     then<TResult1 = T, TResult2 = never>(
       onfulfilled?:
         | ((value: T) => TResult1 | PromiseLike<TResult1>)
@@ -21,11 +15,6 @@ declare global {
         | null,
     ): Promise<TResult1 | TResult2>;
 
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
     catch<TResult = never>(
       onrejected?:
         | ((reason: unknown) => TResult | PromiseLike<TResult>)
@@ -35,9 +24,19 @@ declare global {
   }
 
   interface ArrayConstructor {
-    isArray<T>(arg: T[] extends T ? T | T[] : never): arg is unknown[];
+    isArray<T>(
+      arg: T[] extends T ? T | T[] : never,
+    ): arg is T[] extends T ? T[] : never;
+    isArray(arg: any): arg is ReadonlyArray<unknown> | Array<unknown>;
     new (arrayLength?: number): unknown[];
     (arrayLength?: number): unknown[];
+  }
+
+  interface String {
+    toLowerCase<T extends string>(this: T): Lowercase<T>;
+    toLocaleLowerCase<T extends string>(this: T): Lowercase<T>;
+    toUpperCase<T extends string>(this: T): Uppercase<T>;
+    toLocaleUpperCase<T extends string>(this: T): Uppercase<T>;
   }
 
   interface ReadonlyArray<T> {
@@ -77,11 +76,11 @@ declare global {
       text: string,
       reviver?: (this: unknown, key: string, value: unknown) => any,
     ): unknown;
-  
+
     stringify(
       value: unknown,
       replacer?: (this: unknown, key: string, value: unknown) => unknown,
       space?: string | number,
     ): string;
-  }  
+  }
 }
